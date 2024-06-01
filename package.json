@@ -29,7 +29,6 @@
     "figures": "^6.1.0",
     "lodash": "^4.17.21",
     "pretty-ms": "^9.0.0",
-    "repeat-string": "^1.6.1",
     "tap-out": "^3.0.0",
     "through2": "^4.0.2"
   },
