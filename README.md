@@ -15,8 +15,8 @@ npm install tap-spec --save-dev
 ### Streaming
 
 ```js
-var test = require('tape');
-var tapSpec = require('tap-spec');
+import test from 'tape';
+import tapSpec from 'tap-spec';
 
 test.createStream()
   .pipe(tapSpec())

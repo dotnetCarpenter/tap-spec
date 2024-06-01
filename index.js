@@ -1,26 +1,18 @@
-var fs = require('fs');
+import tapOut from 'tap-out';
+import through from 'through2';
+import duplexer from 'duplexer';
+import format from 'chalk';
+import prettyMs from 'pretty-ms';
+import _ from 'lodash';
+import symbols from 'figures';
 
-var tapOut = require('tap-out');
-var through = require('through2');
-var duplexer = require('duplexer');
-var format = require('chalk');
-var prettyMs = require('pretty-ms');
-var _ = require('lodash');
-var repeat = require('repeat-string');
-var symbols = require('figures');
+export default function (spec = {}) {
+  let OUTPUT_PADDING = spec.padding || '  ';
 
-var lTrimList = require('./lib/utils/l-trim-list');
-
-module.exports = function (spec) {
-
-  spec = spec || {};
-
-  var OUTPUT_PADDING = spec.padding || '  ';
-
-  var output = through();
-  var parser = tapOut();
-  var stream = duplexer(parser, output);
-  var startTime = new Date().getTime();
+  let output = through();
+  let parser = tapOut();
+  let stream = duplexer(parser, output);
+  let startTime = new Date().getTime();
 
   output.push('\n');
 
@@ -33,14 +25,14 @@ module.exports = function (spec) {
   parser.on('pass', function (assertion) {
 
     if (/# SKIP/.test(assertion.name)) {
-      var name = assertion.name.replace(' # SKIP', '')
+      let name = assertion.name.replace(' # SKIP', '')
       name = format.cyan('- ' + name);
 
       output.push(pad('  ' + name + '\n'));
     }
     else {
-      var glyph = format.green(symbols.tick);
-      var name = format.dim(assertion.name);
+      let glyph = format.green(symbols.tick);
+      let name = format.dim(assertion.name);
 
       output.push(pad('  ' + glyph + ' ' + name + '\n'));
     }
@@ -50,10 +42,10 @@ module.exports = function (spec) {
   // Failing assertions
   parser.on('fail', function (assertion) {
 
-    var glyph = symbols.cross;
-    var title =  glyph + ' ' + assertion.name;
-    var raw = format.cyan(prettifyRawError(assertion.error.raw));
-    var divider = _.fill(
+    let glyph = symbols.cross;
+    let title =  glyph + ' ' + assertion.name;
+    let raw = format.cyan(prettifyRawError(assertion.error.raw));
+    let divider = _.fill(
       new Array((title).length + 1),
       '-'
     ).join('');
@@ -109,11 +101,11 @@ module.exports = function (spec) {
 
   function formatErrors (results) {
 
-    var failCount = results.fail.length;
-    var past = (failCount === 1) ? 'was' : 'were';
-    var plural = (failCount === 1) ? 'failure' : 'failures';
+    let failCount = results.fail.length;
+    let past = (failCount === 1) ? 'was' : 'were';
+    let plural = (failCount === 1) ? 'failure' : 'failures';
 
-    var out = '\n' + pad(format.red.bold('Failed Tests:') + ' There ' + past + ' ' + format.red.bold(failCount) + ' ' + plural + '\n');
+    let out = '\n' + pad(format.red.bold('Failed Tests:') + ' There ' + past + ' ' + format.red.bold(failCount) + ' ' + plural + '\n');
     out += formatFailedAssertions(results);
 
     return out;
@@ -136,16 +128,16 @@ module.exports = function (spec) {
 
   function formatFailedAssertions (results) {
 
-    var out = '';
+    let out = '';
 
-    var groupedAssertions = _.groupBy(results.fail, function (assertion) {
+    let groupedAssertions = _.groupBy(results.fail, function (assertion) {
       return assertion.test;
     });
 
     _.each(groupedAssertions, function (assertions, testNumber) {
 
       // Wrie failed assertion's test name
-      var test = _.find(results.tests, {number: parseInt(testNumber)});
+      let test = _.find(results.tests, {number: parseInt(testNumber)});
       out += '\n' + pad('  ' + test.name + '\n\n');
 
       // Write failed assertion

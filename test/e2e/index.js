@@ -1,18 +1,18 @@
 'use strict';
 
-var test = require('tapes');
-var fs = require('fs');
-var _ = require('lodash');
-var path = require('path');
-var okTestPath = path.resolve(__dirname, '..', 'fixtures', 'ok.txt');
-var notOkTestPath = path.resolve(__dirname, '..', 'fixtures', 'not-ok.txt');
-var format = require('chalk');
-var symbols = {
+import test from 'tapes';
+import fs from 'fs';
+import _ from 'lodash';
+import path from 'path';
+let okTestPath = path.resolve(__dirname, '..', 'fixtures', 'ok.txt');
+let notOkTestPath = path.resolve(__dirname, '..', 'fixtures', 'not-ok.txt');
+import format from 'chalk';
+let symbols = {
     ok: '\u2713',
     err: '\u2717'
 };
-var tapSpec = null;
-var actual = null;
+let tapSpec = null;
+let actual = null;
 
 
 test('e2e test', function(t) {
@@ -24,8 +24,8 @@ test('e2e test', function(t) {
 
     t.test('ok test output', function(t) {
         t.plan(1);
-        var testOutStream = fs.createReadStream(okTestPath);
-        var expected = ' '.repeat(2) + 'beep\n' +
+        let testOutStream = fs.createReadStream(okTestPath);
+        let expected = ' '.repeat(2) + 'beep\n' +
                 ' '.repeat(4) + format.green(symbols.ok) + ' ' + format.gray('should be equal') + '\n' +
                 ' '.repeat(4) + format.green(symbols.ok) + ' ' + format.gray('should be equivalent') + '\n' +
                 ' '.repeat(2) + 'boop\n' +
@@ -47,8 +47,8 @@ test('e2e test', function(t) {
 
     t.test('not ok test output', function(t) {
         t.plan(1);
-        var testOutStream = fs.createReadStream(notOkTestPath);
-        var expected = ' '.repeat(2) + 'THIS IS A SUITE\n' +
+        let testOutStream = fs.createReadStream(notOkTestPath);
+        let expected = ' '.repeat(2) + 'THIS IS A SUITE\n' +
             ' '.repeat(2) + 'test 1\n' +
             ' '.repeat(4) + format.green(symbols.ok) + ' ' + format.gray('this test should pass') + '\n' +
             ' '.repeat(2) + 'test 2\n' +
@@ -82,7 +82,7 @@ test('e2e test', function(t) {
 // remove empty lines and 'duration ...' line
 // durationLinePos is the position of 'duration ...' line counting from the last line.
 function normalize(data, durationLinePos) {
-    var noEmptyLine = _.filter(data.split('\n'), function(line) { return line.trim().length !== 0; });
+    let noEmptyLine = _.filter(data.split('\n'), function(line) { return line.trim().length !== 0; });
     noEmptyLine.splice(noEmptyLine.length - durationLinePos - 1, 1);
     return noEmptyLine.join('\n');
 }

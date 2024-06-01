@@ -1,13 +1,13 @@
-var ts = require('../..');
-var test = require('tapes');
-var format = require('chalk');
-var symbols = {
+import ts from '../..';
+import test from 'tapes';
+import format from 'chalk';
+let symbols = {
     ok: '\u2713',
     err: '\u2717'
 };
-var rs = null;
-var actual = null;
-var tapSpec = null;
+let rs = null;
+let actual = null;
+let tapSpec = null;
 
 test('unit test', function(t) {
     t.beforeEach(function(t) {
@@ -23,8 +23,8 @@ test('unit test', function(t) {
 
     t.test('Parsing comment', function(t) {
         t.plan(1);
-        var comment = '# This is a comment\n';
-        var expected = '\n  This is a comment\n\n';
+        let comment = '# This is a comment\n';
+        let expected = '\n  This is a comment\n\n';
 
         rs.on('end', function() {
             t.equal(actual, expected, 'Should format comment correctly.');
@@ -37,8 +37,8 @@ test('unit test', function(t) {
 
     t.test('Assert ok', function(t) {
         t.plan(1);
-        var assert = 'ok 1 this is an ok assertion\n';
-        var expected = '    ' + format.green(symbols.ok) + ' ' + format.gray('this is an ok assertion') + '\n';
+        let assert = 'ok 1 this is an ok assertion\n';
+        let expected = '    ' + format.green(symbols.ok) + ' ' + format.gray('this is an ok assertion') + '\n';
 
         rs.on('end', function() {
             t.equal(actual, expected, 'Should format ok assertion correctly.');
@@ -51,8 +51,8 @@ test('unit test', function(t) {
 
     t.test('Assert not ok', function(t) {
         t.plan(1);
-        var assert = 'not ok 1 this is a not-ok assertion\n';
-        var expected = '    ' + format.red(symbols.err) + ' ' + format.gray('this is a not-ok assertion') + '\n';
+        let assert = 'not ok 1 this is a not-ok assertion\n';
+        let expected = '    ' + format.red(symbols.err) + ' ' + format.gray('this is a not-ok assertion') + '\n';
 
         rs.on('end', function() {
             t.equal(actual, expected, 'Should format not-ok assertion correctly.');
@@ -65,8 +65,8 @@ test('unit test', function(t) {
 
     t.test('Extra', function(t) {
         t.plan(1);
-        var extra = 'something extra that does not match any other regex\n';
-        var expected = '   ' + format.yellow('something extra that does not match any other regex') + '\n';
+        let extra = 'something extra that does not match any other regex\n';
+        let expected = '   ' + format.yellow('something extra that does not match any other regex') + '\n';
 
         rs.on('end', function() {
             t.equal(actual, expected, 'Should format extra correctly.');
